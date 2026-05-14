@@ -6,10 +6,10 @@ import '../models/order_model.dart';
 
 class ApiService {
   // Use localhost for web, and current IP for mobile
-  static const String ngrokUrl = 'https://paola-unsmothering-crunchily.ngrok-free.dev';
+  static const String renderUrl = 'https://shop-now-api-hyuy.onrender.com';
   
-  static String get baseUrl => kIsWeb ? 'http://localhost:5001/api' : '$ngrokUrl/api';
-  static String get serverUrl => kIsWeb ? 'http://localhost:5001' : ngrokUrl;
+  static String get baseUrl => '$renderUrl/api';
+  static String get serverUrl => renderUrl;
 
   // ==================== PRODUCTS ====================
 
@@ -17,7 +17,6 @@ class ApiService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/products'),
-        headers: {'ngrok-skip-browser-warning': '69420'},
       );
       if (response.statusCode == 200) {
         List<dynamic> jsonList = json.decode(response.body);
@@ -46,7 +45,6 @@ class ApiService {
       request.fields['description'] = description;
       request.fields['price'] = price;
       request.fields['category'] = category;
-      request.headers['ngrok-skip-browser-warning'] = '69420';
 
       if (imageBytes != null && imageName != null) {
         request.files.add(http.MultipartFile.fromBytes('image', imageBytes, filename: imageName));
@@ -79,7 +77,6 @@ class ApiService {
       request.fields['description'] = description;
       request.fields['price'] = price;
       request.fields['category'] = category;
-      request.headers['ngrok-skip-browser-warning'] = '69420';
 
       if (imageBytes != null && imageName != null) {
         request.files.add(http.MultipartFile.fromBytes('image', imageBytes, filename: imageName));
@@ -98,7 +95,6 @@ class ApiService {
     try {
       final response = await http.delete(
         Uri.parse('$baseUrl/products/$id'),
-        headers: {'ngrok-skip-browser-warning': '69420'},
       );
       return response.statusCode == 200;
     } catch (e) {
@@ -136,7 +132,6 @@ class ApiService {
         Uri.parse('$baseUrl/orders'),
         headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
         },
         body: json.encode({
           'firebase_uid': firebaseUid,
@@ -160,7 +155,6 @@ class ApiService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders'),
-        headers: {'ngrok-skip-browser-warning': '69420'},
       );
       if (response.statusCode == 200) {
         List<dynamic> jsonList = json.decode(response.body);
@@ -176,7 +170,6 @@ class ApiService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/orders/user/$uid'),
-        headers: {'ngrok-skip-browser-warning': '69420'},
       );
       if (response.statusCode == 200) {
         List<dynamic> jsonList = json.decode(response.body);

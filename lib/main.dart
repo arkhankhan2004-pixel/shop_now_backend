@@ -29,12 +29,12 @@ class ShopNowApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'Roboto',
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF6C63FF),
-            primary: const Color(0xFF6C63FF),
-            secondary: const Color(0xFFFF6584),
+            seedColor: const Color(0xFF0B0C2A),
+            primary: const Color(0xFF0B0C2A),
+            secondary: const Color(0xFFFFD700),
             surface: Colors.white,
           ),
-          scaffoldBackgroundColor: const Color(0xFFF0F2FF),
+          scaffoldBackgroundColor: const Color(0xFFF8F9FA),
         ),
         initialRoute: '/splash',
         routes: {

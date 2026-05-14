@@ -150,20 +150,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF6C63FF), Color(0xFFFF6584)]),
+                      color: const Color(0xFF0B0C2A),
                       borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: const Color(0xFFFFD700), width: 1.5),
                     ),
-                    child: const Icon(Icons.shopping_bag_rounded, color: Colors.white, size: 20),
+                    child: const Icon(Icons.shopping_bag_rounded, color: Color(0xFFFFD700), size: 18),
                   ),
                   const SizedBox(width: 8),
-                  if (size.width > 380)
-                    ShaderMask(
-                      shaderCallback: (bounds) => const LinearGradient(
-                        colors: [Color(0xFF6C63FF), Color(0xFFFF6584)],
-                      ).createShader(bounds),
-                      child: const Text('ShopNow',
-                        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: Colors.white)),
+                  const Text(
+                    'SHOP',
+                    style: TextStyle(
+                      color: Color(0xFF0B0C2A),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                      letterSpacing: 1.5,
                     ),
+                  ),
+                  const Text(
+                    'NOW',
+                    style: TextStyle(
+                      color: Color(0xFFFFD700),
+                      fontWeight: FontWeight.w300,
+                      fontSize: 18,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
                 ],
               ),
               actions: [
@@ -425,8 +436,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color(0xFF6C63FF), Color(0xFFFF6584)])),
-            currentAccountPicture: const CircleAvatar(backgroundColor: Colors.white, child: Icon(Icons.person_rounded, size: 40, color: Color(0xFF6C63FF))),
+            decoration: const BoxDecoration(color: Color(0xFF0B0C2A)),
+            currentAccountPicture: const CircleAvatar(
+              backgroundColor: Color(0xFFFFD700),
+              child: Icon(Icons.person_rounded, size: 40, color: Color(0xFF0B0C2A)),
+            ),
             accountName: Text(AuthService.isLoggedIn ? (AuthService.currentUser!.email?.split('@')[0] ?? 'User') : 'Guest', style: const TextStyle(fontWeight: FontWeight.bold)),
             accountEmail: Text(AuthService.isLoggedIn ? AuthService.currentUser!.email! : 'Please login to continue'),
           ),
