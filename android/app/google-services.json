@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "941229617468",
+    "project_id": "shop-now-92bdc",
+    "storage_bucket": "shop-now-92bdc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941229617468:android:c2dcbdd857b9f7158eae39",
+        "android_client_info": {
+          "package_name": "com.Ar.shop_now"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlI7aXmMhhLw-GlsNbE0NzEXpC0FHPyww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941229617468:android:fec21a9b1359fc2e8eae39",
+        "android_client_info": {
+          "package_name": "com.example.shop_now"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlI7aXmMhhLw-GlsNbE0NzEXpC0FHPyww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

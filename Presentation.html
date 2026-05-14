@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopNow - The Ultimate Tech Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;700;900&family=Playfair+Display:wght@900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary: #C5A358;
+            --bg: #05060A;
+            --glass: rgba(0, 0, 0, 0.7);
+            --border: rgba(197, 163, 88, 0.4);
+            --text: #FFFFFF;
+            --subtext: #cbd5e1;
+            --sql-keyword: #ff7b72;
+            --sql-type: #d2a8ff;
+            --sql-string: #7ee787;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; overflow: hidden; }
+
+        .presentation-wrapper {
+            height: 100vh; width: 100vw;
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        .slide {
+            min-width: 100vw; height: 100vh;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        .content-card {
+            position: relative; z-index: 50;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 40px 60px;
+            width: 80%; max-width: 1100px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            animation: zoomIn 0.6s ease;
+        }
+
+        /* --- Master Floating Bubbles --- */
+        .bubble {
+            position: absolute;
+            z-index: 10;
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.4);
+            animation: floatBubble 12s infinite ease-in-out;
+            opacity: 0.8; 
+            background: rgba(255,255,255,0.15);
+            pointer-events: none;
+        }
+        .bubble img { width: 70%; height: 70%; object-fit: contain; }
+        
+        .bubble-flutter { box-shadow: 0 0 30px rgba(68, 209, 253, 0.7); }
+        .bubble-node { box-shadow: 0 0 30px rgba(104, 160, 99, 0.7); }
+        .bubble-mysql { box-shadow: 0 0 30px rgba(242, 145, 17, 0.7); }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            25% { transform: translateY(-70px) translateX(40px) rotate(15deg); }
+            50% { transform: translateY(-40px) translateX(-50px) rotate(-10deg); }
+            75% { transform: translateY(-90px) translateX(30px) rotate(20deg); }
+        }
+
+        /* --- Team Layout --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .team-col { display: flex; flex-direction: column; gap: 10px; }
+        .member-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .member-item .name { font-weight: 800; font-size: 1.1rem; color: #fff; }
+        .member-item .reg { font-family: 'Fira Code', monospace; color: var(--primary); font-size: 0.8rem; }
+
+        /* --- SQL Panel --- */
+        .sql-panel {
+            background: #0d1117;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #79c0ff;
+            border: 1px solid var(--border);
+            text-align: left;
+            line-height: 1.3;
+        }
+        .keyword { color: var(--sql-keyword); font-weight: bold; }
+        .type { color: var(--sql-type); }
+        .string { color: var(--sql-string); }
+
+        /* --- Typography --- */
+        h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 15px; background: linear-gradient(135deg, #C5A358, #FFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+        h2 { color: var(--primary); font-size: 1.2rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+        p { font-size: 1.1rem; line-height: 1.6; color: var(--subtext); margin-bottom: 15px; text-align: justify; }
+
+        /* --- Navigation --- */
+        .controls { position: fixed; bottom: 30px; right: 30px; display: flex; gap: 10px; z-index: 1000; }
+        .btn {
+            width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary);
+            background: rgba(0,0,0,0.5); color: var(--primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.4s; font-size: 1.2rem;
+        }
+        .btn:hover { background: var(--primary); color: var(--bg); transform: scale(1.1); }
+
+        .page-num { position: fixed; bottom: 30px; left: 30px; color: var(--primary); font-weight: 900; letter-spacing: 5px; font-size: 1.1rem; }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 5px; background: linear-gradient(to right, var(--primary), #fff); z-index: 2000; transition: width 0.3s; }
+
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+    <div class="page-num" id="slideNum">01 / 19</div>
+
+    <div class="presentation-wrapper" id="wrapper">
+        
+        <script>
+            // Stable Wikimedia URLs
+            const flutterLogo = "https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png";
+            const nodeLogo = "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg";
+            const mysqlLogo = "https://upload.wikimedia.org/wikipedia/en/d/dd/MySQL_logo.svg";
+
+            function injectBubbles(slide) {
+                const positions = [
+                    {top: '5%', left: '3%'}, {top: '25%', left: '8%'}, {bottom: '10%', left: '5%'}, {top: '50%', left: '2%'},
+                    {top: '8%', right: '5%'}, {top: '30%', right: '8%'}, {bottom: '15%', right: '3%'}, {top: '60%', right: '6%'},
+                    {top: '2%', left: '40%'}, {bottom: '5%', left: '30%'}, {top: '12%', right: '45%'}, {bottom: '8%', right: '25%'}
+                ];
+
+                const logos = [flutterLogo, nodeLogo, mysqlLogo];
+                const types = ['flutter', 'node', 'mysql'];
+
+                positions.forEach((pos, i) => {
+                    const bubble = document.createElement('div');
+                    const typeIndex = i % 3;
+                    bubble.className = `bubble bubble-${types[typeIndex]}`;
+                    bubble.style.top = pos.top || 'auto';
+                    bubble.style.bottom = pos.bottom || 'auto';
+                    bubble.style.left = pos.left || 'auto';
+                    bubble.style.right = pos.right || 'auto';
+                    bubble.style.animationDelay = `${(i * 0.8).toFixed(1)}s`;
+                    
+                    const img = document.createElement('img');
+                    img.src = logos[typeIndex];
+                    bubble.appendChild(img);
+                    slide.appendChild(bubble);
+                });
+            }
+        </script>
+
+        <!-- SLIDE 1 -->
+        <div class="slide" id="slide1" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>The Architects</h2>
+                <h1>Full-Stack Development Squad</h1>
+                <div class="team-grid">
+                    <div class="team-col">
+                        <div class="member-item"><span class="name">Abdul Rahman</span><span class="reg">Sp25-bcs-160</span></div>
+                        <div class="member-item"><span class="name">Asadullah</span><span class="reg">Sp25-bcs-144</span></div>
+                        <div class="member-item"><span class="name">Zain Ali</span><span class="reg">Sp25-bcs-109</span></div>
+                        <div class="member-item"><span class="name">Linta Ameer</span><span class="reg">SP25-bcs-106</span></div>
+                    </div>
+                    <div class="team-col">
+                        <div class="member-item"><span class="name">Areeba</span><span class="reg">SP25-bcs-119</span></div>
+                        <div class="member-item"><span class="name">Tuba Maryam</span><span class="reg">SP25-bcs-126</span></div>
+                        <div class="member-item"><span class="name">Esham</span><span class="reg">Sp25-bcs-111</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide2" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card" style="text-align: center;">
+                <h2>Capstone Project 2026</h2>
+                <h1 style="font-size: 6rem; margin: 0;">ShopNow</h1>
+                <h2 style="font-size: 2rem; font-weight: 100; letter-spacing: 15px;">Industrial MySQL Solution</h2>
+                <div style="width: 150px; height: 3px; background: var(--primary); margin: 30px auto;"></div>
+                <p style="text-align: center; max-width: 900px; margin: 0 auto;">An advanced e-commerce ecosystem integrating high-performance Flutter interfaces with a scalable Node.js backend and a strictly normalized MySQL data core.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide3" style="background-image: url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Frontend Architecture</h2>
+                <h1>Flutter Reactive Framework</h1>
+                <p>The client-side experience of ShopNow is built on the robust Flutter framework. We utilized a widget-centric approach to build a highly interactive and intuitive user interface. By implementing centralized state management, we ensure that every interaction—from category selection to checkout—is handled with zero latency. The UI follows Material 3 guidelines to provide a modern, premium feel across all mobile platforms.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide4" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Adaptive UX</h2>
+                <h1>Responsive Layout Control</h1>
+                <p>Ensuring cross-device compatibility was a primary objective. We engineered a responsive layout engine that utilizes MediaQuery and custom grid delegates. This allows the application to dynamically transition from a single-column layout on small phones to a complex five-column grid on high-resolution laptop screens. This flexibility ensures that the storefront remains visually balanced and highly usable on any hardware.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide" id="slide5" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Server Infrastructure</h2>
+                <h1>Node.js & Express Performance</h1>
+                <p>Our server-side logic is powered by Node.js, an event-driven, non-blocking I/O runtime that is perfect for high-traffic e-commerce environments. We used Express.js to build a modular API structure that handles authentication, product management, and complex transaction logic. This backend ensures that even during high concurrent load, the system maintains sub-millisecond response times for all client-side requests.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide" id="slide6" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>API Orchestration</h2>
+                <h1>RESTful Communication Flow</h1>
+                <p>The bridge between the client and the data is a series of strictly typed RESTful endpoints. We designed this layer to handle JSON payloads efficiently, ensuring a decoupled architecture where the frontend and backend can evolve independently. This standardized communication protocol allows us to implement features like real-time inventory updates and secure order processing with maximum architectural clarity.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide" id="slide7" style="background-image: url('https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Database Schema: Table 1</h2>
+                <h1>User Management (users)</h1>
+                <div class="sql-panel">
+                    <span class="keyword">CREATE TABLE</span> users (<br>
+                    &nbsp;&nbsp;id <span class="type">INT</span> AUTO_INCREMENT PRIMARY KEY,<br>
+                    &nbsp;&nbsp;firebase_uid <span class="type">VARCHAR</span>(255) UNIQUE <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;name <span class="type">VARCHAR</span>(100) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;email <span class="type">VARCHAR</span>(100) UNIQUE <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;created_at <span class="type">TIMESTAMP</span> <span class="keyword">DEFAULT</span> CURRENT_TIMESTAMP<br>
+                    );
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="slide" id="slide8" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Technical Working</h2>
+                <h1>Identity Synchronization</h1>
+                <p>The `users` table is the source of truth for customer identity. We store a unique `firebase_uid` to map authenticated mobile users to their relational database records. This allows the system to maintain a persistent profile, including shipping details and purchase history, without storing sensitive password data locally. It ensures a seamless bridge between modern OAuth providers and our industrial MySQL backend.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="slide" id="slide9" style="background-image: url('https://images.unsplash.com/photo-1506097425191-7ad538b29cef?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Database Schema: Table 2</h2>
+                <h1>Catalog Engine (products)</h1>
+                <div class="sql-panel">
+                    <span class="keyword">CREATE TABLE</span> products (<br>
+                    &nbsp;&nbsp;id <span class="type">INT</span> AUTO_INCREMENT PRIMARY KEY,<br>
+                    &nbsp;&nbsp;name <span class="type">VARCHAR</span>(255) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;price <span class="type">DECIMAL</span>(10, 2) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;category <span class="type">VARCHAR</span>(100),<br>
+                    &nbsp;&nbsp;discount_percent <span class="type">INT</span> <span class="keyword">DEFAULT</span> 0,<br>
+                    &nbsp;&nbsp;image_url <span class="type">VARCHAR</span>(500)<br>
+                    );
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="slide" id="slide10" style="background-image: url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Technical Working</h2>
+                <h1>Inventory & Sales Logic</h1>
+                <p>The `products` table manages a high-volume catalog of 100+ unique items. By using the `DECIMAL` type, we guarantee financial precision across all transactions. The `discount_percent` field is utilized by our backend logic to calculate dynamic sale prices on-the-fly. This allows the admin to run store-wide promotions that reflect instantly on the user's home screen, powered by efficient SQL indexing.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 11 -->
+        <div class="slide" id="slide11" style="background-image: url('https://images.unsplash.com/photo-1566576721346-d4a3b4eaad5b?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Database Schema: Table 3</h2>
+                <h1>Transaction Hub (orders)</h1>
+                <div class="sql-panel">
+                    <span class="keyword">CREATE TABLE</span> orders (<br>
+                    &nbsp;&nbsp;id <span class="type">INT</span> AUTO_INCREMENT PRIMARY KEY,<br>
+                    &nbsp;&nbsp;user_id <span class="type">INT</span>,<br>
+                    &nbsp;&nbsp;total_amount <span class="type">DECIMAL</span>(10, 2) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;status <span class="type">VARCHAR</span>(50) <span class="keyword">DEFAULT</span> <span class="string">'Pending'</span>,<br>
+                    &nbsp;&nbsp;<span class="keyword">FOREIGN KEY</span> (user_id) <span class="keyword">REFERENCES</span> users(id) <span class="keyword">ON DELETE CASCADE</span><br>
+                    );
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12 -->
+        <div class="slide" id="slide12" style="background-image: url('https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Technical Working</h2>
+                <h1>Transactional Lifecycle</h1>
+                <p>The `orders` table tracks every sale from inception to delivery. By using a Foreign Key linked to the `users` table with `ON DELETE CASCADE`, we ensure that data remains clean and orphaned records are never created. This table manages the `status` of each purchase, allowing for real-time tracking of order fulfillment states, which is a critical feature for any production-grade e-commerce application.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 13 -->
+        <div class="slide" id="slide13" style="background-image: url('https://images.unsplash.com/photo-154919438c-f4c632a07c9c?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Database Schema: Table 4</h2>
+                <h1>Relational Link (order_items)</h1>
+                <div class="sql-panel">
+                    <span class="keyword">CREATE TABLE</span> order_items (<br>
+                    &nbsp;&nbsp;id <span class="type">INT</span> AUTO_INCREMENT PRIMARY KEY,<br>
+                    &nbsp;&nbsp;order_id <span class="type">INT</span>,<br>
+                    &nbsp;&nbsp;product_id <span class="type">INT</span>,<br>
+                    &nbsp;&nbsp;quantity <span class="type">INT</span> <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;price <span class="type">DECIMAL</span>(10, 2) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;<span class="keyword">FOREIGN KEY</span> (order_id) <span class="keyword">REFERENCES</span> orders(id) <span class="keyword">ON DELETE CASCADE</span><br>
+                    );
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14 -->
+        <div class="slide" id="slide14" style="background-image: url('https://images.unsplash.com/photo-1581291417006-03e451493944?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Technical Working</h2>
+                <h1>Normalization & Scaling</h1>
+                <p>The `order_items` table is the relational bridge that allows a single order to contain an unlimited variety of products. By storing the `price` at the moment of sale, we protect historical records from future price fluctuations in the master catalog. This Many-to-Many resolution is essential for maintaining a strictly normalized database that can handle complex queries without performance degradation.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 15 -->
+        <div class="slide" id="slide15" style="background-image: url('https://images.unsplash.com/photo-1504868584819-f8eec2421d50?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>Store Management</h2>
+                <h1>The Admin Control Suite</h1>
+                <p>Efficiency was a primary goal for the administrator's experience. Our dashboard provides real-time access to the entire MySQL catalog. Admins can perform bulk operations, such as multi-deleting obsolete inventory or updating stock status across multiple hubs. The interface is optimized with long-press multi-selection and atomic update calls, ensuring that the store remains fresh and responsive for all users.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 16 -->
+        <div class="slide" id="slide16" style="background-image: url('https://images.unsplash.com/photo-1551288049-bbda48652ad8?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card">
+                <h2>SQL Insights</h2>
+                <h1>Real-time Inventory Visuals</h1>
+                <p>Strategic store decisions require live data. The Admin panel includes a category-wise analytics hub that executes summary SQL queries instantly. Administrators can visualize exactly how many products are live in each category (Tech, Beauty, Groceries, etc.) with a single glance. This real-time feedback loop between the MySQL data and the Flutter UI is what makes ShopNow a truly professional solution.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 17 -->
+        <div class="slide" id="slide17" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card" style="text-align: center;">
+                <h2>Project Synthesis</h2>
+                <h1>A Scalable Commerce Blueprint</h1>
+                <p style="text-align: center; max-width: 900px; margin: 0 auto;">ShopNow successfully demonstrates the powerful synergy between reactive frontend frameworks and robust relational database architectures. We have built an ecosystem that is not only visually stunning but also technically sound, secure, and ready for industrial-scale deployment.</p>
+                <div style="font-size: 5rem; color: var(--primary); margin-top: 20px;"><i class="fas fa-check-double"></i></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18 -->
+        <div class="slide" id="slide18" style="background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2923216?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card" style="text-align: center;">
+                <h1 style="font-size: 5rem;">Questions?</h1>
+                <p style="text-align: center;">Inviting discussion on MySQL Schema Design, API Reliability, and Responsive UX Patterns.</p>
+                <div style="font-size: 4rem; color: var(--primary);"><i class="fas fa-comment-dots"></i></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 19 -->
+        <div class="slide" id="slide19" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200')">
+            <div class="slide-overlay"></div>
+            <div class="content-card" style="text-align: center; border-color: var(--primary);">
+                <h1 style="font-size: 8rem;">JazakAllah!</h1>
+                <h2>Thank you for your distinguished time and attention.</h2>
+                <div style="width: 200px; height: 3px; background: var(--primary); margin: 30px auto;"></div>
+                <p style="text-align: center;">Presented by Our Dedicated Full-Stack Team</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn" id="next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        // Inject 12 Bubbles into every slide
+        document.querySelectorAll('.slide').forEach(slide => {
+            injectBubbles(slide);
+        });
+
+        const wrapper = document.getElementById('wrapper');
+        const slides = document.querySelectorAll('.slide');
+        const nextBtn = document.getElementById('next');
+        const prevBtn = document.getElementById('prev');
+        const slideNum = document.getElementById('slideNum');
+        const progress = document.getElementById('progress');
+
+        let current = 0;
+        const total = slides.length;
+
+        function update() {
+            wrapper.style.transform = `translateX(-${current * 100}vw)`;
+            slides.forEach((s, i) => {
+                if(i === current) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+            slideNum.innerText = `${String(current + 1).padStart(2, '0')} / ${total}`;
+            progress.style.width = `${((current + 1) / total) * 100}%`;
+        }
+
+        nextBtn.addEventListener('click', () => { if(current < total - 1) { current++; update(); } });
+        prevBtn.addEventListener('click', () => { if(current > 0) { current--; update(); } });
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' || e.key === ' ') { if(current < total - 1) { current++; update(); } }
+            if(e.key === 'ArrowLeft') { if(current > 0) { current--; update(); } }
+        });
+
+        update();
+    </script>
+</body>
+</html>
